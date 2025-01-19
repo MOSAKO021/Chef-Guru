@@ -22,11 +22,11 @@ Chef Guru is a web application that allows users to search for recipes, view rec
 
 ## Getting Started
 
-1. Clone the repository: `git clone [https://github.com/MOSAKO021/Chef-Guru.git](https://github.com/MOSAKO021/Chef-Guru.git)`
-2. Navigate to server : `cd server`
+1. Clone the repository: `git clone https://github.com/MOSAKO021/Chef-Guru.git`
+2. Navigate to server : `cd MERN`
 3. Install dependencies: `npm i`
-4. Start the development server: `npm start`
-5. Open your browser and navigate to `http://localhost:3333`
+4. Start the development server: `npm run dev`
+5. Open your browser and navigate to `http://localhost:5173`
 
 ## Contributing
 
