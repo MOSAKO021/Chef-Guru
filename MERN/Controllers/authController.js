@@ -268,24 +268,280 @@ const logout = (req, res) => {
     res.status(StatusCodes.OK).json({ msg: 'user logged out' })
 }
 
+// const getAllIngs = async (req, res) => {
+//     try {
+//         const ingredients = await Ing.find({}, { _id: 0, ingredient: 1 }).exec();
+//         const ingredientList = ingredients.map(doc => doc.ingredient);
+//         res.status(200).json({ ingredients: ingredientList });
+//     } catch (e) {
+//         console.log("Error: ", e);
+//         res.json(500).json({ error: "Error fetching ingredients" }, e)
+//     }
+// }
+
 const getAllIngs = async (req, res) => {
     try {
-        const ingredients = await Ing.find({}, { _id: 0, ingredient: 1 }).exec();
-        const ingredientList = ingredients.map(doc => doc.ingredient);
+        // Hardcoded list of ingredients
+        const ingredientList = [
+            //  Pulses & Legumes
+            "Lentils", 
+            "Chickpeas", 
+            "Black beans", 
+            "Kidney beans", 
+            "Split peas", 
+            "Pinto beans", 
+            "Mung beans", 
+            "Black-eyed peas", 
+            "Green beans", 
+            "Fava beans", 
+            
+            //  Meat & Poultry
+            "Chicken", 
+            "Ground beef", 
+            "Pork chops", 
+            "Lamb", 
+            "Beef steak", 
+            "Turkey", 
+            "Duck", 
+            "Sausages", 
+            "Veal", 
+            "Bacon", 
+            
+            //  Cereals & Grains
+            "Rice", 
+            "Quinoa", 
+            "Oats", 
+            "Barley", 
+            "Bulgur", 
+            "Couscous", 
+            "Farro", 
+            "Millet", 
+            "Wheat berries", 
+            "Cornmeal", 
+            
+            //  Vegetables
+            "Carrots", 
+            "Spinach", 
+            "Broccoli", 
+            "Kale", 
+            "Cauliflower", 
+            "Potatoes", 
+            "Tomatoes", 
+            "Bell peppers", 
+            "Zucchini", 
+            "Mushrooms", 
+            "Cabbage", 
+            "Asparagus", 
+            "Onions", 
+            "Garlic", 
+            "Eggplant", 
+            "Sweetcorn", 
+            "Leeks", 
+            "Brussels sprouts", 
+            "Radishes", 
+            
+            //  Fruits
+            "Apples", 
+            "Bananas", 
+            "Oranges", 
+            "Mangoes", 
+            "Strawberries", 
+            "Blueberries", 
+            "Grapes", 
+            "Avocados", 
+            "Pineapple", 
+            "Pears", 
+            "Peaches", 
+            "Plums", 
+            "Cherries", 
+            "Raspberries", 
+            "Blackberries", 
+            "Watermelon", 
+            "Kiwis", 
+            "Papaya", 
+            "Lemons", 
+            "Limes", 
+            
+            //  Oils & Fats
+            "Olive oil", 
+            "Coconut oil", 
+            "Vegetable oil", 
+            "Butter", 
+            "Ghee", 
+            "Sesame oil", 
+            "Canola oil", 
+            "Peanut oil", 
+            "Avocado oil", 
+            "Sunflower oil", 
+            "Palm oil", 
+            "Truffle oil", 
+            "Walnut oil", 
+            "Almond oil", 
+            
+            //  Sugars & Sweeteners
+            "White sugar", 
+            "Brown sugar", 
+            "Honey", 
+            "Maple syrup", 
+            "Agave syrup", 
+            "Stevia", 
+            "Molasses", 
+            "Coconut sugar", 
+            "Date syrup", 
+            "Powdered sugar", 
+            "Corn syrup", 
+            "Golden syrup", 
+            
+            //  Dairy & Dairy Alternatives
+            "Milk", 
+            "Cheese", 
+            "Yogurt", 
+            "Butter", 
+            "Cream", 
+            "Cottage cheese", 
+            "Ice cream", 
+            "Ghee", 
+            
+            //  Herbs & Spices
+            "Salt", 
+            "Black pepper", 
+            "Cinnamon", 
+            "Cumin", 
+            "Coriander", 
+            "Turmeric", 
+            "Paprika", 
+            "Chili powder", 
+            "Ginger", 
+            "Garlic powder", 
+            "Onion powder", 
+            "Thyme", 
+            "Rosemary", 
+            "Basil", 
+            "Oregano", 
+            "Parsley", 
+            "Mint", 
+            "Saffron", 
+            "Nutmeg", 
+            "Cloves", 
+            "Cardamom", 
+            "Bay leaves", 
+            "Allspice", 
+            
+            //  Nuts & Seeds
+            "Almonds", 
+            "Cashews", 
+            "Walnuts", 
+            "Pistachios", 
+            "Hazelnuts", 
+            "Brazil nuts", 
+            "Pine nuts", 
+            "Peanuts", 
+            "Sunflower seeds", 
+            "Chia seeds", 
+            "Flax seeds", 
+            "Pumpkin seeds", 
+            "Sesame seeds", 
+            "Hemp seeds", 
+            
+            //  Breads & Bakery
+            "White bread", 
+            "Whole wheat bread", 
+            "Sourdough", 
+            "Rye bread", 
+            "Baguette", 
+            "Focaccia", 
+            "Pita", 
+            "Bagels", 
+            "Muffins", 
+            "Croissants", 
+            "Cinnamon rolls", 
+            "Tortillas", 
+            
+            //  Beverages
+            "Water", 
+            "Coffee", 
+            "Tea", 
+            "Juice", 
+            "Lemonade", 
+            "Soda", 
+            "Sparkling water", 
+            "Milkshake", 
+            "Smoothies", 
+            "Herbal tea", 
+            "Energy drinks", 
+            "Wine", 
+            "Beer", 
+            "Whiskey", 
+            "Rum", 
+            
+            //  Condiments & Sauces
+            "Ketchup", 
+            "Mustard", 
+            "Mayonnaise", 
+            "Barbecue sauce", 
+            "Soy sauce", 
+            "Hot sauce", 
+            "Worcestershire sauce", 
+            "Vinegar", 
+            "Honey mustard", 
+            "Ranch dressing", 
+            "Salad dressing", 
+            "Teriyaki sauce", 
+            "Fish sauce", 
+            "Tahini", 
+            "Pesto", 
+            "Chimichurri", 
+            
+            //  Processed & Packaged Foods
+            "Canned tomatoes", 
+            "Canned beans", 
+            "Canned tuna", 
+            "Frozen vegetables", 
+            "Frozen fruits", 
+            "Instant noodles", 
+            "Mac and cheese", 
+            "Granola bars", 
+            "Cereal", 
+            "Crackers", 
+            "Chips", 
+            "Instant oatmeal", 
+            
+            //  Miscellaneous
+            "Tofu", 
+            "Tempeh", 
+            "Seitan", 
+            "Miso paste", 
+            "Nutritional yeast", 
+            "Cornstarch", 
+            "Baking soda", 
+            "Baking powder", 
+            "Vanilla extract", 
+            "Gelatin", 
+            "Agar agar", 
+            "Food coloring", 
+            "Cocoa powder", 
+            "Chocolate chips", 
+            "Marshmallows", 
+            "Coconut flakes"
+        ]
+        
+
+        // Send the hardcoded list as a response
         res.status(200).json({ ingredients: ingredientList });
     } catch (e) {
-        console.log("Error: ", e);
-        res.json(500).json({ error: "Error fetching ingredients" }, e)
+        console.error("Error: ", e);
+        res.status(500).json({ error: "Error fetching ingredients" });
     }
-}
+};
 
 const fetchRecipes = async (req, res) => {
     const ingredients = req.body.ingredients;
-    const url = 'http://localhost:5000/generate-recipe';
-    const data = { ingredients };
+    const url = 'http://127.0.0.1:5000/generate-recipe';
+    // console.log("da:", ingredients);
+    
     
     try {
-        const requests = Array(5).fill().map(() => axios.post(url, data));
+        const requests = Array(5).fill().map(() => axios.post(url, {ingredients}));
         const responses = await Promise.all(requests);
 
         const recipes = responses.map(response => response.data.recipe);

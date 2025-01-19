@@ -178,13 +178,12 @@ const MainContent = ({ ingredients, isUserLoggedIn }) => {
       }
     } catch (error) {
       toast.error(
-        `${
-          error.response?.data?.warning || 'Failed to star recipe'
+        `${error.response?.data?.warning || 'Failed to star recipe'
         }\nPlease refresh your sidebar`
       );
     }
   };
-  
+
   return (
     <div className="relative p-4 flex-1 bg-orange-100">
       <div className="relative z-10">
@@ -237,63 +236,69 @@ const MainContent = ({ ingredients, isUserLoggedIn }) => {
             <p>{responseMessage}</p>
           </div>
         )}
-         {loading ? ( // Show UILoader when loading is true
-          <UILoader />):recipes.length === 0 && (
-          <div className="flex flex-col items-center mt-20">
-            {isLoadingRecipes ? (
-              <UILoader className="text-6xl mt-20 text-orange-900 animate-spin" />
-            ) : (
-              <>
-                <img src={drink} alt="Choose ingredients" className=" mt-20 w-1/6 h-auto" />
-                <p className="mt-4 text-2xl text-orange-900 font-bold">Choose ingredients to view recipes!</p>
-              </>
-            )}
-          </div>
-        )}
+        {loading ? ( // Show UILoader when loading is true
+          <UILoader />) : recipes.length === 0 && (
+            <div className="flex flex-col items-center mt-20">
+              {isLoadingRecipes ? (
+                <UILoader className="text-6xl mt-20 text-orange-900 animate-spin" />
+              ) : (
+                <>
+                  <img src={drink} alt="Choose ingredients" className=" mt-20 w-1/6 h-auto" />
+                  <p className="mt-4 text-2xl text-orange-900 font-bold">Choose ingredients to view recipes!</p>
+                </>
+              )}
+            </div>
+          )}
         {recipes.length > 0 && (
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {recipes.map((recipe, index) => (
-              <IonCard
-                key={index}
-                onClick={() => handleRecipeClick(recipe)}
-                className={`relative border-2 border-orange-900 p-4 ${
-                  isUserLoggedIn ? '' : 'blur-lg cursor-not-allowed'
-                } bg-transparent hover:bg-orange-400 shadow-md shadow-black hover:border-4 hover:font-bold hover:text-white backdrop-filter backdrop-blur-md bg-opacity-30 transition-all duration-300 ease-in-out`}
-              >
-                <div className="absolute top-2 left-2 ">
-                  <button
-                    className="bg-orange-950 shadow-black shadow-md text-orange-50 rounded-full p-2 hover:bg-orange-50 hover:text-orange-950 transition duration-200"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      starRecipe(recipe);
-                    }}
-                  >
-                    <FaStar />
-                  </button>
-                </div>
-                {loadingImages[index] ? (
-                  <div className="flex justify-center items-center w-full">
-                    <div className="loader">Loading...</div>
+          <div>
+            <div className='bg-orange-200 p-4 flex justify-center hover:bg-orange-900 hover:text-orange-100 hover:cursor-pointer border border-orange-900 rounded-lg text-orange-950'>
+              <p>The generated recipes may not contain suitable images as the image generation limit may have expired.</p>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+
+              {recipes.map((recipe, index) => (
+                <IonCard
+                  key={index}
+                  onClick={() => handleRecipeClick(recipe)}
+                  className={`relative border-2 border-orange-900 p-4 ${isUserLoggedIn ? '' : 'blur-lg cursor-not-allowed'
+                    } bg-transparent hover:bg-orange-400 shadow-md shadow-black hover:border-4 hover:font-bold hover:text-white backdrop-filter backdrop-blur-md bg-opacity-30 transition-all duration-300 ease-in-out`}
+                >
+                  <div className="absolute top-2 left-2 ">
+                    <button
+                      className="bg-orange-950 shadow-black shadow-md text-orange-50 rounded-full p-2 hover:bg-orange-50 hover:text-orange-950 transition duration-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        starRecipe(recipe);
+                      }}
+                    >
+                      <FaStar />
+                    </button>
                   </div>
-                ) : (
-                  <div className="image-container">
-                    <img
-                      alt="Recipe"
-                      src={recipe.image || temp}
-                      className="h-60 w-full object-cover rounded-sm border border-orange-950 hover:border-2"
-                    />
+                  {loadingImages[index] ? (
+                    <div className="flex justify-center items-center w-full">
+                      <div className="loader">Loading...</div>
+                    </div>
+                  ) : (
+                    <div className="image-container">
+                      <img
+                        alt="Recipe"
+                        src={recipe.image || temp}
+                        className="h-60 w-full object-cover rounded-sm border border-orange-950 hover:border-2"
+                      />
+                    </div>
+                  )}
+                  <div className="mt-1 border-orange-900">
+                    <div className="border-t-4 border-orange-950"></div>
+                    <IonCardHeader>
+                      <IonCardTitle className="text-xl font-extrabold">
+                        {recipe.name}
+                      </IonCardTitle>
+                    </IonCardHeader>
                   </div>
-                )}
-                <div className="mt-1 border-orange-900">
-                  <div className="border-t-4 border-orange-950"></div>
-                  <IonCardHeader>
-                    <IonCardTitle className="text-xl font-extrabold">
-                      {recipe.name}
-                    </IonCardTitle>
-                  </IonCardHeader>
-                </div>
-              </IonCard>
-            ))}
+                </IonCard>
+              ))}
+            </div>
           </div>
         )}
         {selectedRecipe && (

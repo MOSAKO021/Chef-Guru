@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const authRouter = require('./Routers/authRouter');
 
@@ -13,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 app.use(cookieParser());
-
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
